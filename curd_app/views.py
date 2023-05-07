@@ -24,3 +24,18 @@ def save_info(request):
         return JsonResponse({'status': 'Save', 'information':information})
     else:
         JsonResponse({'status': 0})
+
+
+def update_info(request):
+    pass
+
+def delete_info(request):
+    if request.method == 'POST':
+        id = request.POST['sid']
+        user = UserInfo.objects.get(pk=id)
+        print(user)
+        user.delete()
+        return JsonResponse({'status': 1})
+    else:
+        JsonResponse({'status': 0})
+    
