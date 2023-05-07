@@ -1,9 +1,12 @@
 <script>
+
     $(document).ready(function () {
+        // Save data using ajax request
         $('#saveid').click(function (e) {
             console.log("Submit button clicked");
             e.preventDefault();
             let output = ""
+            let stuid = $('#stuid').val()
             let name = $('#nameid').val();
             let email = $('#exampleInputEmail1').val();
             let password = $('#exampleInputPassword1').val();
@@ -16,25 +19,31 @@
             } else if (password == "") {
                 alert("Please enter password")
             } else {
-                mydata = { name: name, email: email, password: password, csrfmiddlewaretoken: csrf };
+                mydata = { id:stuid, name: name, email: email, password: password, csrfmiddlewaretoken: csrf };
 
                 $.ajax({
                     url: "{% url 'savedata' %}",
                     method: 'POST',
                     data: mydata,
+                    dataType: 'json',
                     success: function (data) {
 
                         if (data.status == "Save") {
+                            //$('#msg').text("Success fully add!!");
+                            //$('#msg').show();
                             console.log(data.information);
                             x = data.information;
-                            console.log(x[0].id);
                             console.log("save");
                             for (i = 0; i < x.length; i++) {
-                                output += "<tr><td>" + x[i].id + "</td><td>" + x[i].name + "</td><td>" + x[i].email + "</td><td>" + x[i].password + "</td><td><input type='button' value='Edit' data-sid=" + x[i].id + " class='btn btn-warning btn-sm btn-edit mr-3'><input type='button' value='Delete' data-sid=" + x[i].id + " class='btn btn-danger btn-sm btn-delete'></td></tr>"
+                                output += "<tr><td>" + x[i].id + "</td><td>" + x[i].name + "</td><td>" + x[i].email + "</td><td>" + x[i].password + "</td><td><input type='button' value='Edit' data-sid=" + x[i].id + " class='btn btn-warning btn-sm btn-edit mr-3'></td><td><input type='button' value='Delete' data-sid=" + x[i].id + " class='btn btn-danger btn-sm btn-delete'></td></tr>"
                             }
-                            $("#tbody").html(output)
+                            $("#tbody").html(output);
+                            alert("Successfully added");
+                            stuid = $('#stuid').val("");
                             $("form")[0].reset();
                         } else if (data.status == 0) {
+                            stuid = $('#stuid').val("");
+                            $("form")[0].reset();
                             console.log("Unsuccessful save");
                         }
                     }
@@ -49,19 +58,18 @@
             console.log("Edit button clicked");
             let id = $(this).attr('data-sid');
             let csrf = $("input[name=csrfmiddlewaretoken]").val();
-
+            mydata = { sid: id, csrfmiddlewaretoken: csrf };
             $.ajax({
                 url: "{% url 'updatedata' %}",
                 method: 'POST',
                 data: mydata,
+                dataType: 'json',
                 success: function (data) {
-                    if (data.status == 1) {
-                        console.log("Update successful");
-                        $(mythis).closest('tr').fadeOut();
-                        //$("#tbody").html(mythis)
-                    } else if (data.status == 0) {
-                        console.log("Update failed");
-                    }
+                    console.log(data);
+                    $("#stuid").val(data.id);
+                    $("#nameid").val(data.name);
+                    $("#exampleInputEmail1").val(data.email);
+                    $("#exampleInputPassword1").val(data.password);
                 }
             })
         })
@@ -84,7 +92,6 @@
                         alert("Delete successful");
                         //console.log("Delete successful");
                         $(mythis).closest('tr').fadeOut();
-                        //$("#tbody").html(mythis)
                     } else if (data.status == 0) {
                         alert("Delete failed");
                     }

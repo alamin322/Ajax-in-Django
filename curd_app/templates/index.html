@@ -14,12 +14,16 @@
 
     <div class="container my-5">
         <h2 class="text-center alert alert-danger">Django Add and Show operation using Ajax</h2>
+
         <div class="row">
 
             <div class="col-sm-4">
                 <h3 class="text-center alert alert-info">Add Information</h3>
                 <form method="post" action="">
                     {% csrf_token %}
+
+                    <input type="hidden" name="stuid" id="stuid">
+
                     <div class="mb-3">
                         <label for="nameid" class="form-label">Name</label>
                         <input type="text" class="form-control" id="nameid" aria-describedby="username" required>
@@ -27,7 +31,8 @@
 
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                            required>
                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                     </div>
                     <div class="mb-3">
@@ -48,7 +53,8 @@
                             <th scope="col">Name</th>
                             <th scope="col">Email</th>
                             <th scope="col">Password</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col">Edit Actions</th>
+                            <th scope="col">Delete Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tbody">
@@ -60,10 +66,14 @@
                             <td>{{i.email}}</td>
                             <td>{{i.password}}</td>
                             <td>
-                                <input type="button" value="Edit" data-sid="{{i.id}}" class="btn btn-warning btn-sm btn-edit">
-                                <input type="button" value="Delete" data-sid="{{i.id}}" class="btn btn-danger btn-sm btn-delete">
+                                <input type="button" value="Edit" data-sid="{{i.id}}"
+                                    class="btn btn-warning btn-sm btn-edit">
                             </td>
-                            
+                            <td>
+                                <input type="button" value="Delete" data-sid="{{i.id}}"
+                                    class="btn btn-danger btn-sm btn-delete">
+                            </td>
+
                         </tr>
                         {% endfor %}
 
@@ -72,6 +82,15 @@
             </div>
 
         </div>
+
+        <!-- <div class="row">
+            <div class="col-sm-4">
+                <div class="alert alert-success" id="msg" style="display:none">
+
+                </div>
+            </div>
+        </div> -->
+
     </div>
 
     <script src="{% static 'js/jquery.js' %}"></script>
