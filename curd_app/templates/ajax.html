@@ -1,0 +1,38 @@
+<script>
+    $(document).ready(function () {
+        $('#saveid').click(function (e) {
+            //console.log("Button clicked");
+            e.preventDefault();
+            let output = ""
+            let name = $('#nameid').val();
+            let email = $('#exampleInputEmail1').val();
+            let password = $('#exampleInputPassword1').val();
+            let csrf = $("input[name=csrfmiddlewaretoken]").val();
+
+            mydata = { name: name, email: email, password: password, csrfmiddlewaretoken: csrf };
+
+            $.ajax({
+                url: "{% url 'savedata' %}",
+                method: 'POST',
+                data: mydata,
+                success: function (data) {
+
+                    if (data.status == "Save") {
+                        console.log(data.information);
+                        x = data.information;
+                        console.log("save");
+                        for (i = 0; i < x.length; i++) {
+                            output += "<tr><td>" + x[i].id + "</td><td>" + x[i].name + "</td><td>" + x[i].email + "</td><td>" + x[i].password + "</td></tr>"
+                        }
+                        $("#tbody").html(output)
+                        $("form")[0].reset();
+                    } else if (data.status == 0) {
+                        console.log("Unsuccessful save");
+                    }
+                }
+            })
+
+        });
+    });
+
+</script>

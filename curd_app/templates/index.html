@@ -1,0 +1,84 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <title>Django Ajax</title>
+
+</head>
+
+<body>
+
+    <div class="container my-5">
+        <h2 class="text-center alert alert-danger">Django Add and Show operation using Ajax</h2>
+        <div class="row">
+
+            <div class="col-sm-4">
+                <h3 class="text-center alert alert-info">Add Information</h3>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="nameid" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="nameid" aria-describedby="username">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1">
+                    </div>
+
+                    <button type="submit" id="saveid" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+            <div class="col-sm-7">
+                <h3 class="text-center alert alert-info">Add Information</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Password</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody">
+
+                        {% for i in info %}
+                        <tr>
+                            <th scope="row">{{i.id}}</th>
+                            <td>{{i.name}}</td>
+                            <td>{{i.email}}</td>
+                            <td>{{i.password}}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+    {% comment %} <script src="{% static 'js/jquery.js' %}"></script>
+    <script src="{% static 'js/popper.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script> {% endcomment %}
+    
+    
+    {% include 'ajax.html' %}
+
+</body>
+
+</html>
